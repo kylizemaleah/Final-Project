@@ -1,0 +1,26 @@
+library(dplyr)
+nhis_clean %>%
+  summarise(
+    Mean_Age = mean(AGEP_A, na.rm = TRUE),
+    Median_Age = median(AGEP_A, na.rm = TRUE),
+    SD_Age = sd(AGEP_A, na.rm = TRUE),
+    Min_Age = min(AGEP_A, na.rm = TRUE),
+    Max_Age = max(AGEP_A, na.rm = TRUE),
+    
+    Mean_BMI = mean(BMI_A, na.rm = TRUE),
+    Median_BMI = median(BMI_A, na.rm = TRUE),
+    SD_BMI = sd(BMI_A, na.rm = TRUE),
+    Min_BMI = min(BMI_A, na.rm = TRUE),
+    Max_BMI = max(BMI_A, na.rm = TRUE)
+  )
+table(nhis_clean$SEX)
+
+prop.table(table(nhis_clean$SEX))
+
+table(nhis_clean$SMOKING)
+
+prop.table(table(nhis_clean$SMOKING))
+
+table(nhis_clean$EDUC)
+
+prop.table(table(nhis_clean$EDUC))
