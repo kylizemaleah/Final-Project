@@ -1,0 +1,5 @@
+library(readr)
+nhis <- read_csv("~/Downloads/nhis_clean.csv")
+names(nhis)
+head(nhis)
+str(nhis)
