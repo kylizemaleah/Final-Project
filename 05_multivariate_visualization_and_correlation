@@ -1,0 +1,23 @@
+library(ggplot2)
+library(dplyr)
+library(corrplot)
+ggplot(nhis_clean,
+       aes(x = AGEP_A,
+           y = BMI_A,
+           color = SMOKING)) +
+  geom_point(alpha = 0.5) +
+  labs(
+    title = "BMI vs Age by Smoking Status",
+    x = "Age",
+    y = "BMI",
+    color = "Smoking Status"
+  ) +
+  theme_minimal()
+
+numeric_data <- nhis_clean %>%
+  select (AGEP_A,
+         BMI_A)
+cor_matrix <- cor(numeric_data,
+                  use = "complete.obs")
+corrplot(cor_matrix,
+         method = "circle")
