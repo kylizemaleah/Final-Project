@@ -1,0 +1,18 @@
+library(ggplot2)
+ggplot(nhis_clean, aes(x = SMOKING)) +
+  geom_bar() +
+  facet_wrap(~ Age_Group) +
+  labs(
+    title = "Smoking Status by Age Group",
+    x = "Smoking Status",
+    y = "Count"
+  ) +
+  theme_minimal()
+# Multivariable Correlation Plot
+library(dplyr)
+numeric_data <- nhis_clean %>%
+  select(AGEP_A, BMI_A)
+cor_matrix <- cor(numeric_data, use = "complete.obs")
+install.packages("corrplot")
+library(corrplot)
+corrplot(cor_matrix, method = "circle")
