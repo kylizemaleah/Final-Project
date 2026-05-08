@@ -1,0 +1,8 @@
+anova_model <- aov(BMI_A ~ SMOKING, data = nhis_clean)
+summary(anova_model)
+
+# not statistically significant, F statistic: 0.691, p-value of 0.406, no significant difference in mean BMI between smoking groups in this sample
+
+# Post-hoc test
+TukeyHSD(anova_model)
+# former and current smoker groups differ
