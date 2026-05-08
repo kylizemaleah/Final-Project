@@ -1,0 +1,202 @@
+library(dplyr)
+library(readr)
+nhis_clean <- nhis %>%
+  select(
+    BMI_A,
+    AGEP_A,
+    SEX_A,
+    SMKSTAT_A,
+    EDUC_A,
+    RACEALLP_A,
+    URBRRL
+  )
+nhis_clean <- nhis_clean %>%
+  filter(
+    !is.na(BMI_A),
+    !is.na(AGEP_A),
+    SMKSTAT_A %in% c(1,2,3),
+    SEX_A %in% c(1,2)
+  )
+nhis_clean <- nhis_clean %>%
+  mutate(
+    BMI = as.numeric(BMI_A),
+    AGE = as.numeric(AGEP_A),
+    
+    SEX = factor(SEX_A,
+                 levels = c(1,2),
+                 labels = c("Male","Female")),
+    
+    SMOKING = factor(SMKSTAT_A,
+                     levels = c(1,2,3),
+                     labels = c("Current smoker",
+                                "Former smoker",
+                                "Never smoker")),
+    
+    URBAN = factor(URBRRL,
+                   levels = c(1,2),
+                   labels = c("Urban","Rural"))
+  )
+nhis_clean <- nhis_clean %>%
+  mutate(
+    
+# turn bad codes into NA first
+    AGEP_A = na_if(AGEP_A, "97"),
+    AGEP_A = na_if(AGEP_A, "98"),
+    AGEP_A = na_if(AGEP_A, "99"),
+    
+# now safely convert
+    AGE = as.numeric(AGEP_A)
+  )
+table(nhis_clean$AGEP_A, useNA = "ifany")
+nhis_clean <- nhis_clean %>%
+  mutate(
+    AGEP_A = na_if(AGEP_A, "97"),
+    AGEP_A = na_if(AGEP_A, "98"),
+    AGEP_A = na_if(AGEP_A, "99"),
+    AGEP_A = trimws(AGEP_A),
+    AGE = as.numeric(AGEP_A)
+  )
+unique(nhis_clean$AGEP_A)
+str(nhis)
+names(nhis)
+nhis <- read_fwf(
+  "~/Downloads/adult21.dat",
+  col_positions = fwf_empty("~/Downloads/adult21.dat")
+)
+nhis$AGE <- as.numeric(gsub("[^0-9]", "", nhis$AGEP_A))
+names(nhis)
+head(nhis)
+nhis$AGEP_A <- trimws(nhis$AGEP_A)
+nhis$AGEP_A <- gsub("[^0-9]", "", nhis$AGEP_A)
+nhis$AGEP_A <- as.numeric(nhis$AGEP_A)
+ls()
+names(nhis)
+str(nhis)
+nhis <- read.csv("~/Downloads/adult21.csv")
+list.files("~/Downloads")
+nhis <- readLines("~/Downloads/adult21.dat")
+nhis_raw <- readLines("~/Downloads/adult21.dat")
+length(nhis_raw)
+head(nhis_raw)
+nhis <- data.frame(
+  AGE = as.numeric(substr(nhis_raw, 120, 122)),
+  BMI = as.numeric(substr(nhis_raw, 300, 304))
+)
+nhis <- read_csv("~/Downloads/nhis_clean.csv")
+names(nhis)
+head(nhis)
+str(nhis)
+library(dplyr)
+
+nhis_clean <- nhis %>%
+  select(AGEP_A, BMI_A, SEX_A, SMKSTAT_A, EDUC_A, RECTYPE, POVINDX_A) %>%
+  filter(!is.na(AGEP_A), !is.na(BMI_A))
+nhis_clean <- nhis_clean %>%
+  mutate(
+    SEX = factor(SEX,
+                 levels = c(1,2),
+                 labels = c("Male","Female")),
+    
+    SMOKING = factor(SMOKING,
+                     levels = c(1,2,3),
+                     labels = c("Current smoker","Former smoker","Never smoker"))
+  )
+AGEP_A = col_character()
+nhis <- nhis %>%
+  mutate(
+    AGEP_A = as.numeric(AGEP_A)
+  )
+nhis_clean <- nhis %>%
+  select(
+    AGEP_A,
+    BMI_A,
+    SEX_A,
+    SMKSTAT_A,
+    EDUC_A,
+    RACEALLP_A,
+    URBRRL,
+    INCOME_A
+  ) %>%
+  filter(
+    !is.na(AGEP_A),
+    !is.na(BMI_A)
+  )
+nhis_clean <- nhis_clean %>%
+  mutate(
+    
+    SEX = factor(SEX_A,
+                 levels = c("1","2"),
+                 labels = c("Male","Female")),
+    
+    SMOKING = factor(SMKSTAT_A,
+                     levels = c(1,2,3),
+                     labels = c("Current smoker","Former smoker","Never smoker")),
+    
+    AGE = AGEP_A,
+    BMI = BMI_A
+  )
+nhis_clean <- nhis_clean %>%
+  mutate(
+    Age_Group = case_when(
+      AGE < 30 ~ "18–29",
+      AGE < 45 ~ "30–44",
+      AGE < 60 ~ "45–59",
+      TRUE ~ "60+"
+    )
+  )
+anova_model <- aov(BMI ~ SMOKING, data = nhis_clean)
+summary(anova_model)
+library(dplyr)
+
+nhis <- nhis %>%
+  mutate(
+    AGEP_A = as.numeric(AGEP_A),
+    BMI_A  = as.numeric(BMI_A)
+  )
+nhis <- nhis %>%
+  mutate(
+    SEX = factor(SEX_A,
+                 levels = c("1", "2"),
+                 labels = c("Male", "Female"))
+  )
+nhis <- nhis %>%
+  mutate(
+    SMOKING = factor(SMKSTAT_A,
+                     levels = c(1, 2, 3),
+                     labels = c("Current smoker",
+                                "Former smoker",
+                                "Never smoker"))
+  )
+nhis <- nhis %>%
+  mutate(
+    EDUC = factor(EDUC_A,
+                  levels = c(1,2,3,4,5),
+                  labels = c("Less than HS",
+                             "High school",
+                             "Some college",
+                             "Bachelor's",
+                             "Graduate"))
+  )
+nhis <- nhis %>%
+  mutate(
+    URBAN = factor(URBRRL,
+                   levels = c(1,2),
+                   labels = c("Urban", "Rural"))
+  )
+nhis <- nhis %>%
+  mutate(
+    Age_Group = case_when(
+      AGEP_A < 30 ~ "18–29",
+      AGEP_A < 45 ~ "30–44",
+      AGEP_A < 60 ~ "45–59",
+      TRUE ~ "60+"
+    )
+  )
+nhis_clean <- nhis %>%
+  select(AGEP_A, Age_Group,
+         BMI_A,
+         SEX,
+         SMOKING,
+         EDUC,
+         URBAN,
+         RACEALLP_A)
